@@ -11,9 +11,8 @@ Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
         local maslento = true
-        local coords = GetEntityCoords(PlayerPedId())
         for _,v in pairs(Config.Main) do
-            local dist = GetDistanceBetweenCoords(coords, v.pos, true)
+            local dist = #(GetEntityCoords(PlayerPedId()) - vec3(v.pos.x, v.pos.y, v.pos.z))
             if dist <= v.distance then
                 maslento = false
                 ShowFloatingHelpNotification(v.text.msg, v.text.pos)
@@ -164,7 +163,7 @@ function Options(vehicle, price, name)
             local ped = PlayerPedId()
             local coords = GetEntityCoords(ped)
             local coordsVehicle = GetEntityCoords(vehicle)
-            local distancia = GetDistanceBetweenCoords(coords, coordsVehicle, true)
+            local distancia = #(coords - coordsVehicle)
             if not testeando then
                 if distancia < 3.5 then
                     maslento = false
