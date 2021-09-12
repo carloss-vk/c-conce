@@ -31,7 +31,7 @@ Citizen.CreateThread(function()
       info.blip = AddBlipForCoord(info.x, info.y, info.z)
       SetBlipSprite(info.blip, info.id)
       SetBlipDisplay(info.blip, 4)
-      SetBlipScale(info.blip, 1.0)
+      SetBlipScale(info.blip, 0.6)
       SetBlipColour(info.blip, info.colour)
       SetBlipAsShortRange(info.blip, true)
 	  BeginTextCommandSetBlipName("STRING")
@@ -131,20 +131,28 @@ OpenVehicleShopMenu = function()
                 end
             end, function(data2, menu2)
                 ESX.Game.DeleteVehicle(currentVehicle)
-                ESX.Game.SpawnLocalVehicle(data2.current.name, vector3(Config.Main.Conce.vehiclepos[1], Config.Main.Conce.vehiclepos[2], Config.Main.Conce.vehiclepos[3]), Config.Main.Conce.vehiclepos[4], function(vehicle)
-                    currentVehicle = vehicle
-                    rotate = true
-                    TriggerEvent('c-vehshop:rotationVehicle', vehicle)
-                end)
+                if ESX.Game.IsSpawnPointClear(vector3(Config.Main.Conce.vehiclepos[1], Config.Main.Conce.vehiclepos[2], Config.Main.Conce.vehiclepos[3]), 5) then
+                    ESX.Game.SpawnLocalVehicle(data2.current.name, vector3(Config.Main.Conce.vehiclepos[1], Config.Main.Conce.vehiclepos[2], Config.Main.Conce.vehiclepos[3]), Config.Main.Conce.vehiclepos[4], function(vehicle)
+                        currentVehicle = vehicle
+                        rotate = true
+                        TriggerEvent('c-vehshop:rotationVehicle', vehicle)
+                    end)
+                else
+                    ESX.ShowNotification('~r~El punto de spawn está bloqueado')
+                end
             end)
             if firstVehicle ~= nil then
-                ESX.Game.SpawnLocalVehicle(firstVehicle, vector3(Config.Main.Conce.vehiclepos[1], Config.Main.Conce.vehiclepos[2], Config.Main.Conce.vehiclepos[3]), Config.Main.Conce.vehiclepos[4], function(vehicle)
-                    currentVehicle = vehicle
-                    rotate = true
-                    TriggerEvent('c-vehshop:rotationVehicle', vehicle)
-                end)
-                firstVehicle = nil
+                if ESX.Game.IsSpawnPointClear(vector3(Config.Main.Conce.vehiclepos[1], Config.Main.Conce.vehiclepos[2], Config.Main.Conce.vehiclepos[3]), 5) then
+                    ESX.Game.SpawnLocalVehicle(firstVehicle, vector3(Config.Main.Conce.vehiclepos[1], Config.Main.Conce.vehiclepos[2], Config.Main.Conce.vehiclepos[3]), Config.Main.Conce.vehiclepos[4], function(vehicle)
+                        currentVehicle = vehicle
+                        rotate = true
+                        TriggerEvent('c-vehshop:rotationVehicle', vehicle)
+                    end)
+                    firstVehicle = nil
+                end
             end
+        else
+            ESX.ShowNotification('~r~El punto de spawn está bloqueado')
         end
     end,
 
