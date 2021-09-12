@@ -334,6 +334,17 @@ Citizen.CreateThread(function()
     end
 end)
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        if testeando then
+            DisableControlAction(0, 75, true)
+	else
+	    Citizen.Wait(1000)
+        end
+    end
+end)
+
 function ShowFloatingHelpNotification(msg, coords)
     SetFloatingHelpTextWorldPosition(1, coords.x, coords.y, coords.z)
     SetFloatingHelpTextStyle(1, 1, 2, -1, 3, 0)
